@@ -1,0 +1,21 @@
+{
+  "Group": "Siren",
+  "Name": "HytaleInsights",
+  "Version": "1.0.0",
+  "Description": "Get up-to-date hytale server stats with mod list.",
+  "Authors": [
+    {
+      "Name": "Siren",
+      "Url": "https://www.mermaids.dev/"
+    }
+  ],
+  "Website": "To-Be-Determined",
+  "ServerVersion": "2026.03.26-89796e57b",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "LoadBefore": {},
+  "DisabledByDefault": false,
+  "IncludesAssetPack": true,
+  "SubPlugins": [],
+  "Main": "plugin.siren.HytaleInsights"
+}

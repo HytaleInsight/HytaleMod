@@ -1,0 +1,7 @@
+# === commands ===
+
+commands.hytaleinsights.insights.desc = Command to receive some insight on some of the server stats.
+
+# === updateChecker ===
+
+updateChecker.hytaleinsights.release.message = The Hytale Insights mod version is outdated, Hytale Insights has released v{version}.
