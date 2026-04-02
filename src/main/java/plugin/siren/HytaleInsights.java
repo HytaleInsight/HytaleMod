@@ -1,23 +1,33 @@
 package plugin.siren;
 
+import com.hypixel.hytale.assetstore.AssetPack;
+import com.hypixel.hytale.common.plugin.PluginManifest;
 import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.HytaleServer;
+import com.hypixel.hytale.server.core.asset.AssetModule;
 import com.hypixel.hytale.server.core.command.system.CommandRegistration;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.plugin.PluginManager;
 import com.hypixel.hytale.server.core.util.Config;
 import plugin.siren.Commands.InsightsCmd;
 import plugin.siren.Events.PlayerReadyEventHI;
+import plugin.siren.Utils.API.DiscordWebhook;
 import plugin.siren.Utils.API.HStats;
 import plugin.siren.Utils.API.HytaleInsightsUpdate;
 import plugin.siren.Utils.Config.HytaleInsightsConfig;
 import plugin.siren.Utils.Github.GithubIgnore;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class HytaleInsights extends JavaPlugin {
-    private static final String VERSION = "1.0.0";
+    private static final String VERSION = "0.1.0";
     private static final boolean DEBUG = false;
 
     private static HytaleInsights plugin;
@@ -65,9 +75,18 @@ public class HytaleInsights extends JavaPlugin {
             LOGGER.atInfo().log("Loaded Hytale Insights in Debug mode.");
         }
 
-        HytaleInsightsUpdate.sendUpdateMessage(HytaleInsightsUpdate.Type.StartUp);
+        if(config.get().ifDiscord()) {
+            HytaleInsightsUpdate.sendUpdateMessage(HytaleInsightsUpdate.Type.StartUp);
+        }
 
         LOGGER.atInfo().log("===---==---==---==---==---==---==---==---===");
+
+        HytaleServer.SCHEDULED_EXECUTOR.schedule(new Runnable() {
+            @Override
+            public void run() {
+                DiscordWebhook.RunWebhookMessage();
+            }
+        }, 15, TimeUnit.SECONDS);
     }
 
     @Override

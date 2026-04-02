@@ -1,5 +1,11 @@
 package plugin.siren.Utils.API;
 
+import com.hypixel.hytale.assetstore.AssetPack;
+import com.hypixel.hytale.common.plugin.PluginManifest;
+import com.hypixel.hytale.server.core.asset.AssetModule;
+import com.hypixel.hytale.server.core.plugin.PluginManager;
+import plugin.siren.HytaleInsights;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.awt.*;
 import java.io.IOException;
@@ -11,6 +17,59 @@ import java.util.*;
 import java.util.List;
 
 public class DiscordWebhook {
+
+    public static void RunWebhookMessage(){
+        boolean ignoreHytale = true;
+
+        List<PluginManifest> pluginsList = new ArrayList<>(PluginManager.get().getAvailablePlugins().values());
+
+        List<AssetPack> assetsPacksList = new ArrayList<>(AssetModule.get().getAssetPacks());
+        for(AssetPack assetPack : assetsPacksList){
+            PluginManifest assetPlugin = assetPack.getManifest();
+
+            boolean addPlugin = true;
+            if(!pluginsList.isEmpty()) {
+                for (PluginManifest plugin : pluginsList) {
+                    if (plugin.getName().equals(assetPlugin.getName()) && plugin.getGroup().equals(assetPlugin.getGroup())) {
+                        addPlugin = false;
+                    }
+                }
+            }
+
+            if(addPlugin) {
+                pluginsList.add(assetPlugin);
+            }
+        }
+
+        if(!pluginsList.isEmpty()) {
+            String discordWebhookMessage = "**List of Server Mods**:\n\n";
+
+            for (PluginManifest plugin : pluginsList) {
+                if (ignoreHytale && plugin.getGroup().equals("Hytale")) {
+                    continue;
+                }
+
+                String message = plugin.getGroup() + "'s " + plugin.getName() + " v" + plugin.getVersion();
+
+                HytaleInsights.LOGGER.atInfo().log(message);
+                discordWebhookMessage += message + "\n";
+            }
+
+            if(HytaleInsights.getConfig().get().ifDiscord()) {
+                DiscordWebhook discordWebhook = new DiscordWebhook(HytaleInsights.getConfig().get().getDiscordWebhook());
+                if(!discordWebhook.getUrl().equalsIgnoreCase(HytaleInsights.getConfig().get().getDiscordWebhookDefault())) {
+                    discordWebhook.setContent(discordWebhookMessage);
+                    try {
+                        discordWebhook.execute();
+                    } catch (IOException e) {
+                        HytaleInsights.LOGGER.atWarning().log("Exception with discordWebhook.execute(), possible invalid discord webhook url : " + e.toString());
+                    }
+                }
+            }
+        }else{
+            HytaleInsights.LOGGER.atWarning().log("You currently have no mods installed on the server. ERROR pluginsList is empty");
+        }
+    }
 
     private final List<EmbedObject> embeds = new ArrayList<>();
 
@@ -24,7 +83,7 @@ public class DiscordWebhook {
 
         this.content = "";
         this.username = "Hytale Insights";
-        this.avatarUrl = "https://cdn.discordapp.com/avatars/1463994388890783958/78b0b6671bb2a3fea9b1e4bcd274d4ac.webp?size=80";
+        this.avatarUrl = "https://cdn.discordapp.com/avatars/1489118681492619274/eafea813690a259832fd6cc87a59e78f.webp?size=80";
         this.tts = false;
     }
 

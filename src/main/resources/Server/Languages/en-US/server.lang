@@ -1,6 +1,8 @@
 # === commands ===
 
-commands.hytaleinsights.insights.desc = Command to receive some insight on some of the server stats.
+commands.hytaleinsights.insights.desc = Hytale Insights insight command line.
+commands.hytaleinsights.insights.reload.desc = Command to reload the config.
+commands.hytaleinsights.insights.status.desc = Command to receive some insight on some of the server stats.
 
 # === updateChecker ===
 

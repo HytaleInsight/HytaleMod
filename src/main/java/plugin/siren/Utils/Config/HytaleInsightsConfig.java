@@ -54,7 +54,8 @@ public class HytaleInsightsConfig {
     private String Information = InformationDefault;
     private final int ConfigVersionDefault = 1;
     private int ConfigVersion = ConfigVersionDefault;
-    private String PluginName = "Hytale Insights";
+    private String PluginNameDefault = "Hytale Insights";
+    private String PluginName = PluginNameDefault;
     private String Version = HytaleInsights.getVersion();
     private String WebsiteDefault = "To-Be-Determined";
     private String Website = WebsiteDefault;
@@ -74,6 +75,9 @@ public class HytaleInsightsConfig {
         if(ConfigVersionDefault > ConfigVersion){
             configUpdated = true;
             ConfigVersion = ConfigVersionDefault;
+        }
+        if(!PluginName.equalsIgnoreCase(PluginNameDefault)){
+            PluginName = PluginNameDefault;
         }
         if(!Version.equalsIgnoreCase(HytaleInsights.getVersion())){
             configUpdated = true;

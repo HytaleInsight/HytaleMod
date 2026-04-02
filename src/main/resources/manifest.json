@@ -1,8 +1,8 @@
 {
   "Group": "Siren",
   "Name": "HytaleInsights",
-  "Version": "1.0.0",
-  "Description": "Get up-to-date hytale server stats with mod list.",
+  "Version": "0.1.0",
+  "Description": "Get up-to-date Hytale server stats with mod list.",
   "Authors": [
     {
       "Name": "Siren",
